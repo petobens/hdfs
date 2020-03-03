@@ -527,8 +527,8 @@ class Client(object):
         if _progress:
           _progress(_local_path, -1)
 
-      with open(_local_path, 'rb') as reader:
-        self.write(_temp_path, wrap(reader, chunk_size, progress), **kwargs)
+      with open(_local_path, 'r') as reader:
+        self.write(_temp_path, reader, **kwargs)
 
     # First, we gather information about remote paths.
     hdfs_path = self.resolve(hdfs_path)
@@ -540,7 +540,7 @@ class Client(object):
         # Remote path is a normal file.
         if not kwargs.get('overwrite'):
           raise HdfsError('Remote path %r already exists.', hdfs_path)
-      elif 'does not exist' in err.message:
+      elif 'does not exist' in err.message or 'not found' in err.message:
         # Remote path doesn't exist.
         temp_path = hdfs_path
       else:
