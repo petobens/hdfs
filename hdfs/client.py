@@ -527,7 +527,7 @@ class Client(object):
         if _progress:
           _progress(_local_path, -1)
 
-      with open(_local_path, 'r') as reader:
+      with open(_local_path, 'rb') as reader:
         self.write(_temp_path, reader, **kwargs)
 
     # First, we gather information about remote paths.
